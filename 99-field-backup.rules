@@ -1,0 +1,8 @@
+# need different approach, with this version of raspbian blkid causes a kernel panic on boot
+# https://github.com/raspberrypi/linux/issues/4550
+
+KERNEL!="sd*", GOTO="SD_early_exit"
+
+ACTION=="add", ENV{ID_FS_TYPE}=="ntfs", SYMLINK+="MediaDest", TAG+="systemd", ENV{SYSTEMD_ALIAS}="/dev/MediaDest", ENV{SYSTEMD_WANTS}+="mount-dest@%k.service"
+
+LABEL="SD_early_exit"
