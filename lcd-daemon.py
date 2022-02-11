@@ -38,19 +38,18 @@ def StatusMedia():
     # mounted, report usage and maybe data rate
     total, used, free = shutil.disk_usage(mnt_dest)
 
-    # convert disk usage to GB
-    used = used / 1024 / 1024 / 1024
-    total = total / 1024 / 1024 / 1024
-
     if prev_usage == 0:
       rate = 0
     else:
       # estimate transfer rate in MB/s
       transfer_rate = (used - prev_usage) / 1024 / 1024
+      if transfer_rate < 0:
+        transfer_rate = 0
+      print("huh: %f" % (transfer_rate))
 
     prev_usage = used
 
-    return '%.2f/%.1f GB' % (used,total)
+    return '%.2f/%.1f GB' % (used / 1024 / 1024 / 1024,total / 1024 / 1024 / 1024)
 
   elif status == 'U':
     # disk is not mounted
